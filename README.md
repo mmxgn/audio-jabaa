@@ -1,2 +1,10 @@
 # audio-jabaa
-Two simple functions for extracting batches of  and augmenting audio segments
+Simple functions for extracting batches of  and augmenting audio segments
+
+## Usage
+
+See ``jabaa.py``
+
+## Installation
+
+
