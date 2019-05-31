@@ -35,7 +35,7 @@ def constant_power_fade_envelopes(duration:float,
 def file_generator(files: list,
                    segment_duration: float,
                    sampleRate: int,
-                   db_thr: float = 30,
+                   db_thr: float or None = None,
                    frame_length: int = 512,
                    hop_length: int = 128,
                    ) -> None:
@@ -78,11 +78,13 @@ def file_generator(files: list,
             # Normalize
             y = y/y.max()
 
-            # Figure out intervals of non-silence (NOTE: Is the threshold right? -- 60db quiet)
-            intervals = librosa.effects.split(y, frame_length=frame_length, hop_length=hop_length, top_db=db_thr)
+            # Remix non-silent segments
+            if db_thr is not None:
+                # Figure out intervals of non-silence (NOTE: Is the threshold right? -- 60db quiet)
+                intervals = librosa.effects.split(y, frame_length=frame_length, hop_length=hop_length, top_db=db_thr)
 
-            # Remix according to those intervals
-            y = librosa.effects.remix(y, intervals)
+                # Remix according to those intervals
+                y = librosa.effects.remix(y, intervals)
 
         if len(segment[I:]) >= len(y[J:]):
             segment[I:I+len(y[J:])] = y[J:]
